@@ -51,15 +51,23 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.035294117647058823" green="0.23921568627450979" blue="0.39215686274509803" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="datelabel" destination="yMo-Gh-mKN" id="FlB-si-b24"/>
+                        <outlet property="locatelabel" destination="6zE-SH-f6M" id="46g-Hf-266"/>
+                        <outlet property="mainbutton" destination="6FG-YF-pNf" id="f5c-ZI-Lqt"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="47.692307692307693" y="-2.1327014218009479"/>
         </scene>
-        <!--View Controller-->
+        <!--Second View Controller-->
         <scene sceneID="cXB-R6-0rq">
             <objects>
-                <viewController id="Tco-Sr-aGU" sceneMemberID="viewController">
+                <viewController id="Tco-Sr-aGU" customClass="SecondViewController" customModule="Original_app" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="U18-JJ-Y04">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
