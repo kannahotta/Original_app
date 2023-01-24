@@ -17,6 +17,8 @@
 		B8451FD7292CCF1A009B54E4 /* Original_appUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8451FD6292CCF1A009B54E4 /* Original_appUITests.swift */; };
 		B8451FD9292CCF1A009B54E4 /* Original_appUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8451FD8292CCF1A009B54E4 /* Original_appUITestsLaunchTests.swift */; };
 		B8451FE629360C85009B54E4 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8451FE529360C85009B54E4 /* SecondViewController.swift */; };
+		B8FA48A1297FE56A0074E6B7 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = B8FA48A0297FE56A0074E6B7 /* SwiftyJSON */; };
+		B8FA48A4297FE5980074E6B7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B8FA48A3297FE5980074E6B7 /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8FA48A1297FE56A0074E6B7 /* SwiftyJSON in Frameworks */,
+				B8FA48A4297FE5980074E6B7 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,6 +150,10 @@
 			dependencies = (
 			);
 			name = Original_app;
+			packageProductDependencies = (
+				B8FA48A0297FE56A0074E6B7 /* SwiftyJSON */,
+				B8FA48A3297FE5980074E6B7 /* Alamofire */,
+			);
 			productName = Original_app;
 			productReference = B8451FB2292CCF15009B54E4 /* Original_app.app */;
 			productType = "com.apple.product-type.application";
@@ -218,6 +226,10 @@
 				Base,
 			);
 			mainGroup = B8451FA9292CCF15009B54E4;
+			packageReferences = (
+				B8FA489F297FE56A0074E6B7 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				B8FA48A2297FE5970074E6B7 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = B8451FB3292CCF15009B54E4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -444,6 +456,8 @@
 				DEVELOPMENT_TEAM = VWF7MH5U4L;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Original_app/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "現在地取得をして、天気を表示する";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -472,6 +486,8 @@
 				DEVELOPMENT_TEAM = VWF7MH5U4L;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Original_app/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "現在地取得をして、天気を表示する";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -606,6 +622,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B8FA489F297FE56A0074E6B7 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		B8FA48A2297FE5970074E6B7 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B8FA48A0297FE56A0074E6B7 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B8FA489F297FE56A0074E6B7 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		B8FA48A3297FE5980074E6B7 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B8FA48A2297FE5970074E6B7 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B8451FAA292CCF15009B54E4 /* Project object */;
 }
