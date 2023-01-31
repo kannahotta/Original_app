@@ -7,6 +7,8 @@
 
 import UIKit
 import CoreLocation
+import SwiftyJSON
+import Alamofire
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -18,6 +20,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet var datelabel: UILabel!
     
     var cityName: String!
+    
+    var my_latitude: CLLocationDegrees!
+    // 取得した経度を保持するインスタンス
+    var my_longitude: CLLocationDegrees!
+    
+    
     @IBOutlet var locatelabel: UILabel!
     
 
@@ -81,7 +89,49 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 //
 //        locatelabel.text =
         
-        
+        my_latitude = locationManager.location?.coordinate.latitude
+        my_longitude = locationManager.location?.coordinate.longitude
+        print(my_latitude)
+        //天気を表示する
+        //緯度軽度を入れる&サイトで発行したAP! keyを入れる。
+        let text = "https://api.openweathermap.org/data/2.5/weather?lat=\(my_latitude)&lon=\(my_longitude)&units=metric&appid=755fc0d3fb63d97d10d070136977a4f7"
+        //上のtextをurlの形に変換する。
+        let url = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        //APIをリクエスト
+        AF.request(url!, method: .get, parameters: nil, encoding: JSONEncoding.default).responseJSON { (response) in
+                    switch response.result {
+                    case .success:
+                        let json = JSON(response.data as Any)
+                        print(json)
+
+                        self.mainbutton.titleLabel?.text = json["weather"][0]["main"].string!
+
+                        //天気によって用意しておいた画像をセットしている。
+                        /*
+                        if self.descriptionWeather == "Clouds" {
+                            self.tenkiImageView.image = UIImage(named: "kumori")
+                        }else if self.descriptionWeather == "Rain" {
+                            self.tenkiImageView.image = UIImage(named: "ame")
+                        }else if self.descriptionWeather == "Snow"{
+                            self.tenkiImageView.image = UIImage(named: "yuki.gif")
+                        }else {
+                            self.tenkiImageView.image = UIImage(named: "hare")
+                        }
+                         */
+
+                        //最低気温とか色々やりたかったら以下のような感じで書く。
+                        /*
+                        self.max.text = "\(Int(json["main"]["temp_max"].number!).description)℃"
+                        self.min.text = "\(Int(json["main"]["temp_min"].number!).description)℃"
+                        self.taikan.text = "\(Int(json["main"]["temp"].number!).description)℃"
+                        self.wind.text = "\(Int(json["wind"]["speed"].number!).description)m/s"
+                         */
+
+                    case .failure(let error):
+                        self.mainbutton.titleLabel!.text = "データ取得失敗"
+                    }
+                }
+       
         
     }
     
@@ -122,9 +172,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             NSLog("Error")
         }
     
-    //座標を取得する
-    
-    func manager.startUpdatingLocation()// 現在地の取得を開始
+
+   
             
     
         }

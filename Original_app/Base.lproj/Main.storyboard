@@ -23,6 +23,9 @@
                                 <buttonConfiguration key="configuration" style="plain" title="">
                                     <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="SecondView" destination="BYZ-38-t0r" eventType="touchUpInside" id="q8f-11-206"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="9月13日" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yMo-Gh-mKN">
                                 <rect key="frame" x="55" y="464" width="280" height="110"/>
@@ -90,6 +93,10 @@
                         <viewLayoutGuide key="safeArea" id="oMW-4S-MzN"/>
                         <color key="backgroundColor" red="1" green="0.94901960784313721" blue="0.89803921568627454" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <connections>
+                        <outlet property="locatelabel" destination="JLL-jE-5Po" id="RTl-cX-A8V"/>
+                        <outlet property="weatherlabel" destination="py1-VS-plx" id="CDf-Sq-YZK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lmX-PT-cby" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
