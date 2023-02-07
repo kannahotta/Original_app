@@ -94,7 +94,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         print(my_latitude)
         //天気を表示する
         //緯度軽度を入れる&サイトで発行したAP! keyを入れる。
-        let text = "https://api.openweathermap.org/data/2.5/weather?lat=\(my_latitude)&lon=\(my_longitude)&units=metric&appid=755fc0d3fb63d97d10d070136977a4f7"
+        let text = "https://api.openweathermap.org/data/2.5/weather?lat=\((my_latitude)!)&lon=\((my_longitude)!)&units=metric&appid=755fc0d3fb63d97d10d070136977a4f7"
         //上のtextをurlの形に変換する。
         let url = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         //APIをリクエスト
@@ -104,8 +104,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                         let json = JSON(response.data as Any)
                         print(json)
 
-                        self.mainbutton.titleLabel?.text = json["weather"][0]["main"].string!
-
+                        self .mainbutton.setTitle(String(describing: json["main"]["temp_max"].number!), for: .normal)
+                    
                         //天気によって用意しておいた画像をセットしている。
                         /*
                         if self.descriptionWeather == "Clouds" {

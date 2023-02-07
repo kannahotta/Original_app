@@ -1,33 +1,37 @@
 //
-//  SecondViewController.swift
+//  Thired ViewController.swift
 //  Original_app
 //
-//  Created by 堀田環菜 on 2022/11/29.
+//  Created by 堀田環菜 on 2023/02/07.
 //
 
 import UIKit
 import CoreLocation
-import SwiftyJSON
-import Alamofire
 
-class SecondViewController: UIViewController, CLLocationManagerDelegate{
+class Thired_ViewController: UIViewController {
     
-    @IBOutlet var locatelabel2: UILabel!
+    @IBOutlet var locatelabel3: UILabel!
     
-    @IBOutlet var weatherlabel: UILabel!
+    @IBAction func backBtnAction(_ sender: Any) {
+    self.dismiss(animated: true, completion: nil)
+        
+}
     
     var cityName: String!
     
+    //インスタンス化してる！
     var locationManager = CLLocationManager()
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
-        locationManager.startUpdatingLocation()
         
+        
+        
+        locationManager.startUpdatingLocation()
+
+        // Do any additional setup after loading the view.
     }
-    
     
     func locationManager(_ manager: CLLocationManager,didChangeAuthorization status: CLAuthorizationStatus) {// 許可を求めるためのdelegateメソッド
         switch status {
@@ -49,7 +53,7 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate{
                     return
                 }
                 self.cityName = locality
-                self.locatelabel2.text = self.cityName!
+                self.locatelabel3.text = self.cityName!
                 
             }
             break
@@ -67,4 +71,14 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate{
         //位置情報取得開始
                 
     }
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
 }
