@@ -28,6 +28,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet var locatelabel: UILabel!
     
+    @IBAction func toThirdButton(_ sender: Any) {
+        performSegue(withIdentifier: "toThirdView", sender: nil)
+    }
+    
+    @IBOutlet var uranailabel: UILabel!
+    
+    var UranaiArray: [String] = ["今日のラッキーアイテムはペットボトルの蓋！","ケンタッキーチキンの味付けを知っている人は世界で2人しかいないらしい"]
 
     
     @IBAction func SecondView() {
@@ -63,6 +70,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //位置ラベルの角を丸くする
         locatelabel.layer.cornerRadius = 25
         locatelabel.clipsToBounds = true
+        
+        //占い
+        uranailabel.text = UranaiArray[Int.random(in: 0..<UranaiArray.count)]
+        
+        //占いラベルを角丸にする
+        uranailabel.layer.cornerRadius = 25
+        uranailabel.clipsToBounds = true
         
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -104,8 +118,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                         let json = JSON(response.data as Any)
                         print(json)
 
-                        self .mainbutton.setTitle(String(describing: json["main"]["temp_max"].number!), for: .normal)
+                        self .mainbutton.setTitle(String(describing: "\(json["main"]["temp"].number!)℃"), for: .normal)
                     
+                        print("kyounokionnha\( json["main"]["temp"].number!)")
                         //天気によって用意しておいた画像をセットしている。
                         /*
                         if self.descriptionWeather == "Clouds" {
