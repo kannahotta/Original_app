@@ -37,6 +37,7 @@ class SecondViewController: UIViewController {
                 let deltaRotation = rotation - self?.lastRotation ?? 0
                 self?.lastRotation = rotation
                 
+                
                 // 回転した角度を表示
                 print("Rotation: \(deltaRotation * 180 / .pi)")
             }
