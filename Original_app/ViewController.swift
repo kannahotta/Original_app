@@ -34,7 +34,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet var uranailabel: UILabel!
     
-    var UranaiArray: [String] = ["今日のラッキーアイテムはペットボトルの蓋！","ケンタッキーチキンの味付けを知っている人は世界で2人しかいないらしい"]
+    var UranaiArray: [String] = ["「早起きは三文の徳」の三文は150円\nラッキーアイテム：ペットボトルの蓋！","ケンタッキーチキンの味付けを知っている人は世界で2人しかいない\nラッキーアイテム：どんぐり","喉が痛い時はマシュマロを食べるといいらしい\nラッキーカラー：オレンジ","ラクダは食べすぎるとコブが太る\nラッキカラー：パーパル","日本の歯医者の数はコンビニよりも多い\nラッキーアイテム：羽根","世界で最も多い名前は「ムハンマド」\nラッキーアイテム：牛柄のもの","ダチョウの卵をゆでるのに約４時間かかる\nラッキーカラー：サーモンピンク","かくれんぼで鬼が勝手に帰ると監禁罪になる\nラッキーカラー：群青","トウモロコシの粒の数は必ず偶数\nラッキーアイテム：チョコのお菓子"]
 
     
     @IBAction func SecondView() {
@@ -60,20 +60,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let dateFormatter = DateFormatter()
         
         
-        dateFormatter.dateFormat = "MM月dd日"
+        dateFormatter.dateFormat = "M月dd日"
         
         print(dateFormatter.string(from: date))
         
         datelabel.text = dateFormatter.string(from: date)
+        
+        datelabel.font = UIFont(name:"hanatotyoutyo" ,size: 45)
+        
      
         
         //位置ラベルの角を丸くする
         locatelabel.layer.cornerRadius = 25
         locatelabel.clipsToBounds = true
+        locatelabel.font = UIFont(name:"hanatotyoutyo" ,size: 45)
         
         //占い
         uranailabel.text = UranaiArray[Int.random(in: 0..<UranaiArray.count)]
-        
+        uranailabel.font = UIFont(name:"hanatotyoutyo" ,size: 22)
         //占いラベルを角丸にする
         uranailabel.layer.cornerRadius = 25
         uranailabel.clipsToBounds = true
@@ -112,14 +116,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //上のtextをurlの形に変換する。
         let url = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         //APIをリクエスト
-        AF.request(url!, method: .get, parameters: nil, encoding: JSONEncoding.default).responseJSON { (response) in
+        AF.request(url!, method: .get, parameters: nil, encoding: JSONEncoding.default).responseJSON { [self] (response) in
                     switch response.result {
                     case .success:
                         let json = JSON(response.data as Any)
                         print(json)
-
-                        self .mainbutton.setTitle(String(describing: "\(json["main"]["temp"].number!)℃"), for: .normal)
-                    
+                        
+                        let temp = json["main"]["temp"].number!
+                        let tempRound = Int(round(Double(temp)))
+                        print(tempRound)
+                        mainbutton.setTitle("\(String(tempRound))℃", for: .normal)
+                                                                                                
+                                                                                            
                         print("kyounokionnha\( json["main"]["temp"].number!)")
                         //天気によって用意しておいた画像をセットしている。
                         /*

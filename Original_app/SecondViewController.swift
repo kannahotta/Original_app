@@ -2,69 +2,64 @@
 //  SecondViewController.swift
 //  Original_app
 //
-//  Created by 堀田環菜 on 2022/11/29.
+//  Created by 堀田環菜 on 2023/04/18.
 //
 
 import UIKit
-import CoreLocation
-import SwiftyJSON
-import Alamofire
+import CoreMotion
 
-class SecondViewController: UIViewController, CLLocationManagerDelegate{
+class SecondViewController: UIViewController {
     
-    @IBOutlet var locatelabel2: UILabel!
-    
-    @IBOutlet var weatherlabel: UILabel!
-    
-    var cityName: String!
-    
-    var locationManager = CLLocationManager()
-    
-    override func viewDidLoad() {
-        
-        super.viewDidLoad()
-        
-        locationManager.startUpdatingLocation()
-        
-    }
-    
-    
-    func locationManager(_ manager: CLLocationManager,didChangeAuthorization status: CLAuthorizationStatus) {// 許可を求めるためのdelegateメソッド
-        switch status {
-        case .notDetermined:// 許可されてない場合
-            manager.requestWhenInUseAuthorization()// 許可を求める
-        case .restricted, .denied:// 拒否されてる場合
-            break// 何もしない
+
+        let motionManager = CMMotionManager()
+        var lastRotation = CGFloat(0)
+
+        override func viewDidLoad() {
+            super.viewDidLoad()
+
+            // モーションセンサーからのデータを取得する間隔を設定
+            motionManager.deviceMotionUpdateInterval = 0.1
             
-        case .authorizedWhenInUse: // 許可されている場合
-            manager.startUpdatingLocation()// 現在地の取得を開始
-            
-            //市町村を取得
-            CLGeocoder().reverseGeocodeLocation(locationManager.location!) { placemarks, error in
-                guard
-                    let placemark = placemarks?.first, error == nil,
-                    let locality = placemark.locality
-                else {
-                    
-                    return
-                }
-                self.cityName = locality
-                self.locatelabel2.text = self.cityName!
+            // モーションセンサーのデータ取得を開始
+            motionManager.startDeviceMotionUpdates(to: OperationQueue.current!) { [weak self] (data, error) in
+                guard let data = data, error == nil else { return }
+
+                // モーションデータからデバイスの姿勢を取得
+                let attitude = data.attitude
                 
+                // デバイスの姿勢から回転行列を取得
+                let rotationMatrix = attitude.rotationMatrix
+                
+                // 回転行列から回転角を取得
+                let rotation = atan2(rotationMatrix.m21, rotationMatrix.m11)
+                
+                // 前回の回転角からの差分を計算し、回転角を更新
+                let deltaRotation = rotation - self?.lastRotation ?? 0
+                self?.lastRotation = rotation
+                
+                // 回転した角度を表示
+                print("Rotation: \(deltaRotation * 180 / .pi)")
             }
-            break
-        default:
-            break
+        }
+
+        override func viewWillDisappear(_ animated: Bool) {
+            super.viewWillDisappear(animated)
+            motionManager.stopDeviceMotionUpdates()
         }
     }
+
+
     
-    /* 位置情報取得失敗時に実行される関数 */
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        // この例ではLogにErrorと表示するだけ．
-        //アラート　位置情報をオンにしてください。って出す
-        NSLog("Error")
-        
-        //位置情報取得開始
-                
+    
+    
+  
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
     }
-}
+    */
+
