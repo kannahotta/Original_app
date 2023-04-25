@@ -34,12 +34,14 @@ class SecondViewController: UIViewController {
                 let rotation = atan2(rotationMatrix.m21, rotationMatrix.m11)
                 
                 // 前回の回転角からの差分を計算し、回転角を更新
-                let deltaRotation = rotation - self?.lastRotation ?? 0
-                self?.lastRotation = rotation
+                print(rotation)
+                print(self!.lastRotation)
+              //  let deltaRotation = rotation - self?.lastRotation ?? 0
+               // self?.lastRotation = rotation
                 
                 
                 // 回転した角度を表示
-                print("Rotation: \(deltaRotation * 180 / .pi)")
+                //print("Rotation: \(deltaRotation * 180 / .pi)")
             }
         }
 

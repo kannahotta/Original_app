@@ -10,6 +10,8 @@
 		A1BBC2C629AE0E1000C21083 /* 花とちょうちょ.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A1BBC2C529AE0E1000C21083 /* 花とちょうちょ.ttf */; };
 		A1BBC2C829AE0F6F00C21083 /* shouta.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A1BBC2C729AE0F6F00C21083 /* shouta.ttf */; };
 		B83404C629EEABF2009E74EB /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83404C529EEABF2009E74EB /* SecondViewController.swift */; };
+		B83404C829F7E273009E74EB /* Ellipse 1.png in Resources */ = {isa = PBXBuildFile; fileRef = B83404C729F7E273009E74EB /* Ellipse 1.png */; };
+		B83404CA29F7E2FE009E74EB /* Ellipse 2.png in Resources */ = {isa = PBXBuildFile; fileRef = B83404C929F7E2FE009E74EB /* Ellipse 2.png */; };
 		B8451FB6292CCF15009B54E4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8451FB5292CCF15009B54E4 /* AppDelegate.swift */; };
 		B8451FB8292CCF15009B54E4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8451FB7292CCF15009B54E4 /* SceneDelegate.swift */; };
 		B8451FBA292CCF15009B54E4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8451FB9292CCF15009B54E4 /* ViewController.swift */; };
@@ -44,6 +46,8 @@
 		A1BBC2C529AE0E1000C21083 /* 花とちょうちょ.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "花とちょうちょ.ttf"; sourceTree = "<group>"; };
 		A1BBC2C729AE0F6F00C21083 /* shouta.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = shouta.ttf; sourceTree = "<group>"; };
 		B83404C529EEABF2009E74EB /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		B83404C729F7E273009E74EB /* Ellipse 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ellipse 1.png"; sourceTree = "<group>"; };
+		B83404C929F7E2FE009E74EB /* Ellipse 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Ellipse 2.png"; sourceTree = "<group>"; };
 		B8451FB2292CCF15009B54E4 /* Original_app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Original_app.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8451FB5292CCF15009B54E4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B8451FB7292CCF15009B54E4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -117,6 +121,8 @@
 				A1BBC2C529AE0E1000C21083 /* 花とちょうちょ.ttf */,
 				A1BBC2C729AE0F6F00C21083 /* shouta.ttf */,
 				B8451FBE292CCF19009B54E4 /* Assets.xcassets */,
+				B83404C929F7E2FE009E74EB /* Ellipse 2.png */,
+				B83404C729F7E273009E74EB /* Ellipse 1.png */,
 				B8451FC0292CCF19009B54E4 /* LaunchScreen.storyboard */,
 				B8451FC3292CCF19009B54E4 /* Info.plist */,
 			);
@@ -255,7 +261,9 @@
 			files = (
 				A1BBC2C829AE0F6F00C21083 /* shouta.ttf in Resources */,
 				B8451FC2292CCF19009B54E4 /* LaunchScreen.storyboard in Resources */,
+				B83404CA29F7E2FE009E74EB /* Ellipse 2.png in Resources */,
 				B8451FBF292CCF19009B54E4 /* Assets.xcassets in Resources */,
+				B83404C829F7E273009E74EB /* Ellipse 1.png in Resources */,
 				A1BBC2C629AE0E1000C21083 /* 花とちょうちょ.ttf in Resources */,
 				B8451FBD292CCF15009B54E4 /* Main.storyboard in Resources */,
 			);
