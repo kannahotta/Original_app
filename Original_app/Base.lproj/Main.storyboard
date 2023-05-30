@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Ellipse 2.png" translatesAutoresizingMaskIntoConstraints="NO" id="Jin-eu-a9e">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Group 3.png" translatesAutoresizingMaskIntoConstraints="NO" id="Jin-eu-a9e">
                                 <rect key="frame" x="19" y="404" width="352" height="352"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -131,6 +131,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Ellipse 2.png" width="760" height="760"/>
+        <image name="Group 3.png" width="1379" height="1380"/>
     </resources>
 </document>
