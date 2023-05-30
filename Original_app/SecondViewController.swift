@@ -11,12 +11,10 @@ import SwiftyJSON
 import Alamofire
 import CoreLocation
 
-class SecondViewController: UIViewController, CLLocationManagerDelegate {
-    
+
+class SecondViewController: UIViewController {
     
     @IBOutlet weak var compassImageView: UIImageView!
-    
-    @IBOutlet var tempdisplay: UILabel!
     
     var lastRotation: CGFloat = 0
     //スムーズに動かすために用意しているよ。CADisplayLinkはアニメーションや画面の更新処理をスムーズにさせたい時に使うよん。
@@ -24,87 +22,34 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
     var targetRotation: CGFloat = 0
     var currentRotation: CGFloat = 0
     
-    //let motionManager = CMMotionManager()
-    //var lastRotation = CGFloat(0)
+    var my_latitude: CLLocationDegrees!
+    // 取得した経度を保持するインスタンス
+    var my_longitude: CLLocationDegrees!
+    
+    // 1時間ごとの気温情報を保存する配列
+    var hourlyTemperatures: [Double] = []
     
     override func viewDidLoad() {
         
         var locationManager = CLLocationManager()
         
-        var my_latitude: CLLocationDegrees!
-        // 取得した経度を保持するインスタンス
-        var my_longitude: CLLocationDegrees!
+        locationManager.delegate = self
+        
+        // アプリの使用中のみ許可
+        locationManager.requestWhenInUseAuthorization()
+        
+        // 位置情報の取得精度を指定する
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+        // 更新に必要な最小移動距離
+        // Int値を指定することで、〇〇m間隔で取得するようになる
+        locationManager.distanceFilter = 10
+        
+        // 位置情報取得開始
+        locationManager.startUpdatingLocation()
         
         
         super.viewDidLoad()
-        
-        
-        // 1時間ごとの気温情報を保存する配列
-        var hourlyTemperatures: [Double] = []
-
-        // locationManager = CLLocationManager()
-         locationManager.delegate = self
-         
- //        //アプリの使用中のみ許可
-         locationManager.requestWhenInUseAuthorization()
- //
- //        //位置情報の取得精度を指定する
- //        locationManager!.desiredAccuacy = CLLocationAccuracyBest
- //
- //        //更新に必要な最小移動距離
- //        //Int値を指定することで、〇〇m間隔で取得するようになる
- //        locationManager!.distanseFilter = 10
- //
- //        //位置情報取得開始
-         locationManager.startUpdatingLocation()
- //
- //        locatelabel.text =
-         
-         my_latitude = locationManager.location?.coordinate.latitude
-         my_longitude = locationManager.location?.coordinate.longitude
-         print(my_latitude)
-         //天気を表示する
-         //緯度軽度を入れる&サイトで発行したAP! keyを入れる。
-         let text = "https://api.openweathermap.org/data/2.5/weather?lat=\((my_latitude)!)&lon=\((my_longitude)!)&units=metric&appid=755fc0d3fb63d97d10d070136977a4f7"
-         //上のtextをurlの形に変換する。
-         let url = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-         //APIをリクエスト
-        
-        AF.request(url!, method: .get, parameters: nil, encoding: JSONEncoding.default).responseJSON { [self] (response) in
-            switch response.result {
-            case .success:
-                let json = JSON(response.data as Any)
-                print(json)
-
-                // 1時間ごとの気温情報を取得して配列に保存
-                if let hourlyForecasts = json["list"].array {
-                    for forecast in hourlyForecasts {
-                        if let temperature = forecast["main"]["temp"].double {
-                            hourlyTemperatures.append(temperature)
-                        }
-                    }
-                }
-
-                // UILabelのテキストを更新する
-                updateTemperatureLabel()
-
-                // その他の処理...
-
-            case .failure(let error):
-                self.tempdisplay.text = "データ取得失敗"
-            }
-        }
-
-        // UILabelのテキストを更新するメソッド
-        func updateTemperatureLabel() {
-            // 適切な気温データを取得（例: 最新の気温データを表示する場合は hourlyTemperatures.last を使用）
-            if let latestTemperature = hourlyTemperatures.last {
-                // UILabelに気温を表示
-                tempdisplay.text = "\(latestTemperature)℃"
-            }
-        }
-
-        
         
         // UIPanGestureRecognizerを作成して、ビューに追加する
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(rotateCompass(_:)))
@@ -115,21 +60,6 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
         displayLink = CADisplayLink(target: self, selector: #selector(updateRotation))
         // displayLinkをメインスレッドのRunLoopに追加し、デフォルトモードで動作させる
         displayLink?.add(to: .main, forMode: .default)
-        
-        
-        // 画像を15°ずつスライドさせるアニメーションを作成
-        let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
-        rotationAnimation.fromValue = 0.0
-        rotationAnimation.toValue = CGFloat.pi * 2.0 * 24.0 * (15.0 / 360.0) // 24時間分の回転角度
-        rotationAnimation.duration = 24.0 * 60.0 * 60.0 // 24時間の秒数
-        
-        // アニメーションが終了した後も最終位置で停止するように設定
-        rotationAnimation.isRemovedOnCompletion = false
-        rotationAnimation.fillMode = .forwards
-        
-        // アニメーションを追加して実行
-        compassImageView.layer.add(rotationAnimation, forKey: "rotationAnimation")
-        
     }
     
     deinit {
@@ -170,30 +100,53 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
     
     
     
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        //  motionManager.stopDeviceMotionUpdates()
+    }
 }
 
+// CLLocationManagerDelegateのメソッドを実装
+extension SecondViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            guard let location = locations.last else { return }
+            my_latitude = location.coordinate.latitude
+            my_longitude = location.coordinate.longitude
+            print(my_latitude)
 
+            let apiUrl = "https://api.openweathermap.org/data/2.5/weather"
+            let apiKey = "YOUR_API_KEY"
 
+            let parameters: Parameters = [
+                "lat": my_latitude,
+                "lon": my_longitude,
+                "units": "metric",
+                "appid": apiKey
+            ]
 
-//override func viewWillDisappear(_ animated: Bool) {
-// super.viewWillDisappear(animated)
-// motionManager.stopDeviceMotionUpdates()
+            AF.request(apiUrl, parameters: parameters).responseJSON { response in
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value)
+                    print(json)
 
+                    if let hourlyForecasts = json["list"].array {
+                        for forecast in hourlyForecasts {
+                            if let temperature = forecast["main"]["temp"].double {
+                                self.hourlyTemperatures.append(temperature)
+                            }
+                        }
+                    }
 
+                case .failure(let error):
+                    print("天気情報の取得に失敗しました: \(error)")
+                }
 
-
-
-
-
-
-/*
- // MARK: - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
- // Get the new view controller using segue.destination.
- // Pass the selected object to the new view controller.
- }
- */
-
+                self.locationManager.stopUpdatingLocation()
+            }
+        }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("位置情報の取得に失敗しました: \(error.localizedDescription)")
+    }
+}
