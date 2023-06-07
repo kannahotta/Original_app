@@ -14,6 +14,10 @@ import CoreLocation
 
 class SecondViewController: UIViewController {
     
+    @IBOutlet var tempdisplay: UILabel!
+    
+    @IBOutlet var timelabel: UILabel!
+    
     @IBOutlet weak var compassImageView: UIImageView!
     
     var lastRotation: CGFloat = 0
@@ -21,6 +25,8 @@ class SecondViewController: UIViewController {
     var displayLink: CADisplayLink?
     var targetRotation: CGFloat = 0
     var currentRotation: CGFloat = 0
+    var angleDifference: CGFloat = 0
+    var currentTime: CGFloat = 0.0 // currentTimeの追加
     
     var my_latitude: CLLocationDegrees!
     // 取得した経度を保持するインスタンス
@@ -30,6 +36,10 @@ class SecondViewController: UIViewController {
     var hourlyTemperatures: [Double] = []
     
     override func viewDidLoad() {
+        
+        
+        
+        
         
         var locationManager = CLLocationManager()
         
@@ -75,13 +85,13 @@ class SecondViewController: UIViewController {
         case .began:
             //前回の回転を保持するために、現在の回転角度をlastRotationに入れておく。
             lastRotation = atan2(sender.location(in: compassImageView).y - compassCenter.y, sender.location(in: compassImageView).x - compassCenter.x)
-            print(lastRotation)
+         //   print(lastRotation)
             //実際に動いた分動かす。
         case .changed:
             //指が移動した後の角度を求める。
             let newRotation = atan2(sender.location(in: compassImageView).y - compassCenter.y, sender.location(in: compassImageView).x - compassCenter.x)
             //今の角度-前回いた位置の角度で変化量を出す。
-            let angleDifference = newRotation - lastRotation
+            angleDifference = newRotation - lastRotation
             //targetRotation(すなわち、目的のいきたい角度)を求める。
             targetRotation = currentRotation + angleDifference
         default:
@@ -89,7 +99,34 @@ class SecondViewController: UIViewController {
         }
     }
     
+    @objc func updateRotation() {
+        let rotationSpeed: CGFloat = 0.2
+        // 既存の回転処理のコード
+
+        // 回転角度を24時間制に変換する処理
+        currentRotation = currentRotation + (targetRotation - currentRotation) * rotationSpeed
+        currentRotation = currentRotation.truncatingRemainder(dividingBy: 360)
+        print(currentRotation)
+        if currentRotation < 0 {
+            currentRotation += 360
+        }
+        
+        compassImageView.transform = CGAffineTransform(rotationAngle: currentRotation)
+
+        let hourMarkerAngle = 360.0 / 24.0 // 1時間あたりの角度
+            let hours = currentRotation / hourMarkerAngle
+        let hoursIn24Format = (hours).truncatingRemainder(dividingBy: 24)
+        let minutes = hoursIn24Format * 60
+
+        // 時間を表示するラベルに値を設定するなど、必要な処理を追加する
+        timelabel.text = String(format: "%.0f時 %.0f分", hoursIn24Format, minutes)
+        // メモリの数値を表示するラベルに値を設定するなど、必要な処理を追加する
+        //markerslabel.text = "\(hourMarkers)"
+    }
+
+    
     //スムーズに動かすためのメソッド
+    /*
     @objc func updateRotation() {
         //回転のスピードを決める。大きくすると早く、小さくするとゆっくりになるよ。
         let rotationSpeed: CGFloat = 0.2
@@ -97,6 +134,7 @@ class SecondViewController: UIViewController {
         currentRotation = currentRotation + (targetRotation - currentRotation) * rotationSpeed
         compassImageView.transform = CGAffineTransform(rotationAngle: currentRotation)
     }
+     */
     
     
     
@@ -142,7 +180,7 @@ extension SecondViewController: CLLocationManagerDelegate {
                     print("天気情報の取得に失敗しました: \(error)")
                 }
 
-                self.locationManager.stopUpdatingLocation()
+               // self.locationManager.stopUpdatingLocation()
             }
         }
     
