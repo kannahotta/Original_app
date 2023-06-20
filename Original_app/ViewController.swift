@@ -110,7 +110,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         my_latitude = locationManager.location?.coordinate.latitude
         my_longitude = locationManager.location?.coordinate.longitude
         print(my_latitude)
-        //天気を表示する
+       
         //緯度軽度を入れる&サイトで発行したAP! keyを入れる。
         let text = "https://api.openweathermap.org/data/2.5/weather?lat=\((my_latitude)!)&lon=\((my_longitude)!)&units=metric&appid=755fc0d3fb63d97d10d070136977a4f7"
         //上のtextをurlの形に変換する。
