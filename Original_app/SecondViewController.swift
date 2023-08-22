@@ -14,6 +14,8 @@ import CoreLocation
 
 class SecondViewController: UIViewController, CLLocationManagerDelegate {
     
+    @IBOutlet var date2label: UILabel!
+    
     @IBOutlet var tempdisplay: UILabel!
     
     @IBOutlet var timelabel: UILabel!
@@ -33,7 +35,7 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
     var my_longitude: CLLocationDegrees!
     
     // 1時間ごとの気温情報を保存する配列
-    var hourlyTemperatures: [Double] = []
+    var hourlyTemperatures: [(String, Double)] = []
     
     var locationManager = CLLocationManager()
     
@@ -41,11 +43,19 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         
+        //日付ラベル２ フォントと角丸
+        date2label.font = UIFont(name:"hanatotyoutyo" ,size: 25)
+        //date2label.layer.cornerRadius = 15
+        //date2label.clipsToBounds = true
+        
         //気温ボタンの角を丸くする
         tempdisplay.layer.cornerRadius = 25
         tempdisplay.clipsToBounds = true
         
-
+        //時間ボタンの角を丸くする
+        timelabel.layer.cornerRadius = 17
+        timelabel.clipsToBounds = true
+        
         
         locationManager.delegate = self
         
@@ -60,7 +70,6 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.distanceFilter = 10
         
         // 位置情報取得開始
-        
         locationManager.startUpdatingLocation()
         
         
@@ -71,7 +80,6 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
         compassImageView.addGestureRecognizer(panGesture)
         
         //CADisplayLinkのインスタンスを作成！updateRotationメソッドを呼び出すように設定
-        //インスタンスって何？については、別で送ったのを見てねー。
         displayLink = CADisplayLink(target: self, selector: #selector(updateRotation))
         // displayLinkをメインスレッドのRunLoopに追加し、デフォルトモードで動作させる
         displayLink?.add(to: .main, forMode: .default)
@@ -84,71 +92,72 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
     @objc func rotateCompass(_ sender: UIPanGestureRecognizer) {
         
         let compassCenter = CGPoint(x: compassImageView.bounds.size.width / 2.0, y: compassImageView.bounds.size.height / 2.0)
-                let radiansToDegrees = 180 / CGFloat.pi
-                
-                switch sender.state {
-                    //回し始め
-                case .began:
-                    let dy = sender.location(in: compassImageView).y - compassCenter.y
-                            let dx = sender.location(in: compassImageView).x - compassCenter.x
-                            lastRotation = atan2(dy, dx) * radiansToDegrees
-                case .changed:
-                    let dy = sender.location(in: compassImageView).y - compassCenter.y
-                            let dx = sender.location(in: compassImageView).x - compassCenter.x
-                            var newRotation = atan2(dy, dx) * radiansToDegrees
-                            if newRotation - lastRotation > 180 {
-                                newRotation -= 360
-                            } else if newRotation - lastRotation < -180 {
-                                newRotation += 360
-                            }
-                            angleDifference = newRotation - lastRotation
-                            targetRotation = currentRotation + angleDifference
-                            lastRotation = newRotation
-                default:
-                    break
-                }
+        let radiansToDegrees = 180 / CGFloat.pi
+        
+        switch sender.state {
+            //回し始め
+        case .began:
+            let dy = sender.location(in: compassImageView).y - compassCenter.y
+            let dx = sender.location(in: compassImageView).x - compassCenter.x
+            lastRotation = atan2(dy, dx) * radiansToDegrees
+        case .changed:
+            let dy = sender.location(in: compassImageView).y - compassCenter.y
+            let dx = sender.location(in: compassImageView).x - compassCenter.x
+            var newRotation = atan2(dy, dx) * radiansToDegrees
+            if newRotation - lastRotation > 180 {
+                newRotation -= 360
+            } else if newRotation - lastRotation < -180 {
+                newRotation += 360
+            }
+            angleDifference = newRotation - lastRotation
+            targetRotation = currentRotation + angleDifference
+            lastRotation = newRotation
+        default:
+            break
+        }
     }
     
     @objc func updateRotation() {
         let rotationSpeed: CGFloat = 0.4
-                // 既存の回転処理のコード
-
-                // 回転角度を24時間制に変換する処理
-                currentRotation = currentRotation + (targetRotation - currentRotation) * rotationSpeed
-                currentRotation = currentRotation.truncatingRemainder(dividingBy: 360)
-                print(currentRotation)
-                if currentRotation < 0 {
-                    currentRotation += 360
-                }
-                
-               // compassImageView.transform = CGAffineTransform(rotationAngle: currentRotation)
-                compassImageView.transform = CGAffineTransform(rotationAngle: currentRotation * CGFloat.pi / 180)
-
-                let hourMarkerAngle = 360.0 / 24.0 // 1時間あたりの角度
-                    let hours = currentRotation / hourMarkerAngle
-               // let hoursIn24Format = (hours).truncatingRemainder(dividingBy: 24)
-                // let minutes = hoursIn24Format * 60
-                let hoursIn24Format = floor(hours)
-                let minutes = (hours - hoursIn24Format) * 60
+        // 既存の回転処理のコード
+        
+        // 回転角度を24時間制に変換する処理
+        currentRotation = currentRotation + (targetRotation - currentRotation) * rotationSpeed
+        currentRotation = currentRotation.truncatingRemainder(dividingBy: 360)
+        //print(currentRotation)
+        if currentRotation < 0 {
+            currentRotation += 360
+        }
+        
+        // compassImageView.transform = CGAffineTransform(rotationAngle: currentRotation)
+        compassImageView.transform = CGAffineTransform(rotationAngle: currentRotation * CGFloat.pi / 180)
+        
+        let hourMarkerAngle = 360.0 / 24.0 // 1時間あたりの角度
+        let hours = currentRotation / hourMarkerAngle
+        let hoursIn24Format = floor(hours)
+        
         
         sethour = Int(hoursIn24Format)
-                // 時間を表示するラベルに値を設定するなど、必要な処理を追加する
-                timelabel.text = String(format: "%.0f時 %.0f分", hoursIn24Format, minutes)
-                // メモリの数値を表示するラベルに値を設定するなど、必要な処理を追加する
-                //markerslabel.text = "\(hourMarkers)"
+        // 時間を表示するラベルに値を設定するなど、必要な処理を追加する
+        timelabel.text = String(format: "%.0f時", hoursIn24Format)
+        // メモリの数値を表示するラベルに値を設定するなど、必要な処理を追加する
+        //３時間単位で、気温ラベルも変わる。
+        updateTemperatureLabelWithRotation(hoursIn24Format)
+        
+    }
+    func updateTemperatureLabelWithRotation(_ hoursIn24Format: CGFloat) {
+        // 15度ごとに気温を更新する
+        let temperatureIndex = Int(hoursIn24Format / 15)
+        
+        // hourlyTemperatures 配列から気温を取得
+        if temperatureIndex >= 0 && temperatureIndex < hourlyTemperatures.count {
+            let temperature = hourlyTemperatures[temperatureIndex]
+            tempdisplay.text = "\(temperature.0) \(temperature.1)°C"
+        } else {
+            tempdisplay.text = "---"
+        }
     }
     
-    
-    //スムーズに動かすためのメソッド
-    /*
-     @objc func updateRotation() {
-     //回転のスピードを決める。大きくすると早く、小さくするとゆっくりになるよ。
-     let rotationSpeed: CGFloat = 0.2
-     //1回の動きの後にくる角度はここで求めているよ。
-     currentRotation = currentRotation + (targetRotation - currentRotation) * rotationSpeed
-     compassImageView.transform = CGAffineTransform(rotationAngle: currentRotation)
-     }
-     */
     
     
     
@@ -159,95 +168,72 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
     
     
     // CLLocationManagerDelegateのメソッドを実装
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         guard let location = locations.last else { return }
         my_latitude = location.coordinate.latitude
         my_longitude = location.coordinate.longitude
         
-        print("ichi",my_latitude)
         
         //緯度軽度を入れる&サイトで発行したAP! keyを入れる。
-        let text = "https://api.openweathermap.org/data/2.5/weather?lat=\((my_latitude)!)&lon=\((my_longitude)!)&exclude=hourly&units=metric&appid=755fc0d3fb63d97d10d070136977a4f7"
+        let apiurl = "https://api.openweathermap.org/data/2.5/forecat?"
         //上のtextをurlの形に変換する。
-        let url = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let apikey = "55752a71af45fc0206fde6414a84f0bd"
+        
+        let parameters: Parameters = [
+            "lat": my_latitude,
+            "lon": my_longitude,
+            
+            "exclude": "curent,minutely,daily,alerts",
+            "units": "metric",
+            "appid": apikey
+        ]
+        
+        
+        
         //APIをリクエスト
-        AF.request(url!, method: .get, parameters: nil, encoding: JSONEncoding.default).responseJSON { [self] (response) in
-            switch response.result {
-            case .success:
-                let json = JSON(response.data as Any)
-                print(json)
-                
-                let temp = json["main"]["temp"].number!
-                let tempRound = Int(round(Double(temp)))
-                print(tempRound)
-                tempdisplay.text = "\(String(tempRound))℃"
-                
-                
-                
-                print("1時間ごとの気温は\( json["hourly"]["temp"])")
-                //天気によって用意しておいた画像をセットしている。
-                /*
-                 if self.descriptionWeather == "Clouds" {
-                 self.tenkiImageView.image = UIImage(named: "kumori")
-                 }else if self.descriptionWeather == "Rain" {
-                 self.tenkiImageView.image = UIImage(named: "ame")
-                 }else if self.descriptionWeather == "Snow"{
-                 self.tenkiImageView.image = UIImage(named: "yuki.gif")
-                 }else {
-                 self.tenkiImageView.image = UIImage(named: "hare")
-                 }
-                 */
-                
-                //最低気温とか色々やりたかったら以下のような感じで書く。
-                /*
-                 self.max.text = "\(Int(json["main"]["temp_max"].number!).description)℃"
-                 self.min.text = "\(Int(json["main"]["temp_min"].number!).description)℃"
-                 self.taikan.text = "\(Int(json["main"]["temp"].number!).description)℃"
-                 self.wind.text = "\(Int(json["wind"]["speed"].number!).description)m/s"
-                 */
-                
-            case .failure(let error):
-                self.tempdisplay.text = "データ取得失敗"
+        AF.request(apiurl, parameters: parameters).responseData { response in switch response.result {
+        case .success(let value):
+            let json = JSON(value)
+            print(json)
+            
+            if let threeHourlyForecasts = json["list"].array {
+                self.hourlyTemperatures.removeAll()
+                for forecast in threeHourlyForecasts {
+                    if let temperature = forecast["main"]["temp"].double,
+                       let timestamp = forecast["dt"].double {
+                        let date = Date(timeIntervalSince1970: timestamp)
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "HH:mm"
+                        let time = dateFormatter.string(from: date)
+                        self.hourlyTemperatures.append((time, temperature))
+                    }
+                }
             }
+            print(self.hourlyTemperatures)
+            
+        case .failure(let error):
+            print("天気情報の取得に失敗しました: \(error)")
         }
-        
-        
+        }
     }
     
-    //map許可
-    /*
-     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-     guard let location = locations.last else { return }
-     my_latitude = location.coordinate.latitude
-     my_longitude = location.coordinate.longitude
-     print(my_latitude)
-     
-     let text = "https://api.openweathermap.org/data/2.5/weather?lat=\((my_latitude)!)&lon=\((my_longitude)!)&units=metric&appid=755fc0d3fb63d97d10d070136977a4f7"
-     let url = text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-     
-     AF.request(url!, method: .get, parameters: nil, encoding: JSONEncoding.default).responseJSON { [self] (response) in
-     switch response.result {
-     case .success:
-     let json = JSON(response.data as Any)
-     print(json)
-     
-     let temp = json["main"]["temp"].number!
-     let tempRound = Int(round(Double(temp)))
-     print(tempRound)
-     
-     DispatchQueue.main.async { [self] in
-     tempdisplay.text = "\(tempRound)℃"
-     
-     }
-     
-     case .failure(let error):
-     print("データ取得失敗: \(error)")
-     }
-     }
-     }
-     
-     */
-    
+    //        struct dateFormatter {
+    //            let time: String
+    //            let temperature: Double
+    //
+    //        }
+    //
+    //        let dataFormatter = hourlyTemperatures
+    //        var labelText =
+    //
+    //        for data in dataFormatter {
+    //            labelText += "\(time.dataFormat)"
+    //            labelText += "Temperature: \(data.hourlytemperatures)°C"
+    //        }
+    //
+    //        tempdisplay.text = labelText
+    //
+    //
+
 }

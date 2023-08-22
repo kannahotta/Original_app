@@ -16,6 +16,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBOutlet var mainbutton: UIButton!
     
+    @IBOutlet var infolabel: UILabel!
+    
     
     @IBOutlet var datelabel: UILabel!
     
@@ -49,6 +51,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //メインボタンの角を丸くする
         mainbutton.layer.cornerRadius = 25
         mainbutton.clipsToBounds = true
+        
+        //詳しくみるボタン
+        infolabel.font = UIFont(name:"hanatotyoutyo" ,size: 20)
       
         //日付ラベルの角を丸くする
         datelabel.layer.cornerRadius = 25
