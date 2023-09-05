@@ -27,12 +27,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     // 取得した経度を保持するインスタンス
     var my_longitude: CLLocationDegrees!
     
+    // オプショナル型のUIFontを宣言
+    var font: UIFont?
     
     @IBOutlet var locatelabel: UILabel!
-    
-    @IBAction func toThirdButton(_ sender: Any) {
-        performSegue(withIdentifier: "toThirdView", sender: nil)
-    }
+
     
     @IBOutlet var uranailabel: UILabel!
     
@@ -51,6 +50,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //メインボタンの角を丸くする
         mainbutton.layer.cornerRadius = 25
         mainbutton.clipsToBounds = true
+        
+        mainbutton.titleLabel?.font = font // エラー：'UIFont?'型の値を 'UIFont'型にアンラップする必要があります
+
+
         
         //詳しくみるボタン
         infolabel.font = UIFont(name:"hanatotyoutyo" ,size: 20)
@@ -73,6 +76,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         datelabel.font = UIFont(name:"hanatotyoutyo" ,size: 45)
         
+        mainbutton.titleLabel?.font = UIFont(name: "hanatotyoutyo", size: 82)!
      
         
         //位置ラベルの角を丸くする
@@ -90,7 +94,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-      
+        
         
         
         

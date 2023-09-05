@@ -14,13 +14,15 @@ import CoreLocation
 
 class SecondViewController: UIViewController, CLLocationManagerDelegate {
     
-    @IBOutlet var date2label: UILabel!
-    
     @IBOutlet var tempdisplay: UILabel!
     
     @IBOutlet var timelabel: UILabel!
     
     @IBOutlet weak var compassImageView: UIImageView!
+    
+    @IBOutlet var genzailabel: UILabel!
+    
+    @IBOutlet var genzai2label: UILabel!
     
     var lastRotation: CGFloat = 0
     //スムーズに動かすために用意しているよ。CADisplayLinkはアニメーションや画面の更新処理をスムーズにさせたい時に使うよん。
@@ -41,19 +43,38 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
     
     var sethour: Int = 0
     
+    var timer: Timer?
+    
+    
     override func viewDidLoad() {
         
-        //日付ラベル２ フォントと角丸
-        date2label.font = UIFont(name:"hanatotyoutyo" ,size: 25)
-        //date2label.layer.cornerRadius = 15
-        //date2label.clipsToBounds = true
+        // タイマーを使って1分ごとに時刻を更新する
+        //  Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { [weak self] timer in
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH時mm分" // 時間と分のフォーマット
+        let currentTime = dateFormatter.string(from: Date())
+        
+        // ラベルに現在時刻を表示
+        self.genzai2label.text = currentTime
+        // }
+        
+        startTimer()
+        
+        genzailabel.font = UIFont(name:"hanatotyoutyo" ,size: 20)
+        
+        genzai2label.font = UIFont(name:"hanatotyoutyo" ,size: 20)
+        
+        tempdisplay.font = UIFont(name:"hanatotyoutyo" ,size: 82)
+        
+        timelabel.font = UIFont(name: "hanatotyoutyo", size: 27)
+        
         
         //気温ボタンの角を丸くする
         tempdisplay.layer.cornerRadius = 25
         tempdisplay.clipsToBounds = true
         
         //時間ボタンの角を丸くする
-        timelabel.layer.cornerRadius = 17
+        timelabel.layer.cornerRadius = 14
         timelabel.clipsToBounds = true
         
         
@@ -87,6 +108,7 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
     
     deinit {
         displayLink?.invalidate()
+        timer?.invalidate()
     }
     
     @objc func rotateCompass(_ sender: UIPanGestureRecognizer) {
@@ -141,8 +163,16 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
         // 時間を表示するラベルに値を設定するなど、必要な処理を追加する
         timelabel.text = String(format: "%.0f時", hoursIn24Format)
         // メモリの数値を表示するラベルに値を設定するなど、必要な処理を追加する
-        //３時間単位で、気温ラベルも変わる。
-        updateTemperatureLabelWithRotation(hoursIn24Format)
+        
+        //ここで天気を取得する
+        let index = Int(hoursIn24Format) / 3 //3時間ごとのインデックスを取得する
+        if index < hourlyTemperatures.count {
+            let temperatureData = hourlyTemperatures[index]
+            let roundedTemperature = Int(temperatureData.1)
+            tempdisplay.text = "\(roundedTemperature)℃"
+        } else {
+            tempdisplay.text = "不明"
+        }
         
     }
     func updateTemperatureLabelWithRotation(_ hoursIn24Format: CGFloat) {
@@ -176,7 +206,7 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
         
         
         //緯度軽度を入れる&サイトで発行したAP! keyを入れる。
-        let apiurl = "https://api.openweathermap.org/data/2.5/forecat?"
+        let apiurl = "https://api.openweathermap.org/data/2.5/forecast?"
         //上のtextをurlの形に変換する。
         let apikey = "55752a71af45fc0206fde6414a84f0bd"
         
@@ -218,22 +248,39 @@ class SecondViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    //        struct dateFormatter {
-    //            let time: String
-    //            let temperature: Double
-    //
-    //        }
-    //
-    //        let dataFormatter = hourlyTemperatures
-    //        var labelText =
-    //
-    //        for data in dataFormatter {
-    //            labelText += "\(time.dataFormat)"
-    //            labelText += "Temperature: \(data.hourlytemperatures)°C"
-    //        }
-    //
-    //        tempdisplay.text = labelText
-    //
-    //
+    func startTimer() {
+        // タイマーがすでに存在する場合は、一旦破棄する
+        timer?.invalidate()
+        // 1秒ごとに updateTime() メソッドを呼び出すタイマーをセットする
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTime), userInfo: nil, repeats: true)
+    }
+    
+    @objc func updateTime() {
+        // 現在の時刻を取得する
+        let now = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH時mm分"
+        // ラベルに時刻をセットする
+       genzai2label.text = formatter.string(from: now)
+    }
+    
 
 }
+
+//        struct dateFormatter {
+//            let time: String
+//            let temperature: Double
+//
+//        }
+//
+//        let dataFormatter = hourlyTemperatures
+//        var labelText =
+//
+//        for data in dataFormatter {
+//            labelText += "\(time.dataFormat)"
+//            labelText += "Temperature: \(data.hourlytemperatures)°C"
+//        }
+//
+//        tempdisplay.text = labelText
+//
+//

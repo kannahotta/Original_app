@@ -23,6 +23,9 @@
 		B8451FCD292CCF1A009B54E4 /* Original_appTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8451FCC292CCF1A009B54E4 /* Original_appTests.swift */; };
 		B8451FD7292CCF1A009B54E4 /* Original_appUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8451FD6292CCF1A009B54E4 /* Original_appUITests.swift */; };
 		B8451FD9292CCF1A009B54E4 /* Original_appUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8451FD8292CCF1A009B54E4 /* Original_appUITestsLaunchTests.swift */; };
+		B8B141BC2A9DF2D400CE2E2A /* Group 3 (1).png in Resources */ = {isa = PBXBuildFile; fileRef = B8B141BB2A9DF2D400CE2E2A /* Group 3 (1).png */; };
+		B8B141BE2A9DF61D00CE2E2A /* Line 33 (1).png in Resources */ = {isa = PBXBuildFile; fileRef = B8B141BD2A9DF61C00CE2E2A /* Line 33 (1).png */; };
+		B8B141C02A9DF63A00CE2E2A /* Group 3 (2).png in Resources */ = {isa = PBXBuildFile; fileRef = B8B141BF2A9DF63A00CE2E2A /* Group 3 (2).png */; };
 		B8FA48A1297FE56A0074E6B7 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = B8FA48A0297FE56A0074E6B7 /* SwiftyJSON */; };
 		B8FA48A4297FE5980074E6B7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = B8FA48A3297FE5980074E6B7 /* Alamofire */; };
 /* End PBXBuildFile section */
@@ -65,6 +68,9 @@
 		B8451FD2292CCF1A009B54E4 /* Original_appUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Original_appUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8451FD6292CCF1A009B54E4 /* Original_appUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Original_appUITests.swift; sourceTree = "<group>"; };
 		B8451FD8292CCF1A009B54E4 /* Original_appUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Original_appUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		B8B141BB2A9DF2D400CE2E2A /* Group 3 (1).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Group 3 (1).png"; sourceTree = "<group>"; };
+		B8B141BD2A9DF61C00CE2E2A /* Line 33 (1).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Line 33 (1).png"; sourceTree = "<group>"; };
+		B8B141BF2A9DF63A00CE2E2A /* Group 3 (2).png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Group 3 (2).png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,15 +126,18 @@
 				B8451FB5292CCF15009B54E4 /* AppDelegate.swift */,
 				B8451FB7292CCF15009B54E4 /* SceneDelegate.swift */,
 				B8451FBB292CCF15009B54E4 /* Main.storyboard */,
-				B83404C529EEABF2009E74EB /* SecondViewController.swift */,
 				B8451FB9292CCF15009B54E4 /* ViewController.swift */,
+				B83404C529EEABF2009E74EB /* SecondViewController.swift */,
 				A1BBC2C529AE0E1000C21083 /* 花とちょうちょ.ttf */,
 				A1BBC2C729AE0F6F00C21083 /* shouta.ttf */,
 				B8451FBE292CCF19009B54E4 /* Assets.xcassets */,
 				B83404C929F7E2FE009E74EB /* Ellipse 2.png */,
 				B80708642A2F39E20034124E /* Line 33.png */,
 				B80708622A2605070034124E /* Group 3.png */,
+				B8B141BB2A9DF2D400CE2E2A /* Group 3 (1).png */,
+				B8B141BF2A9DF63A00CE2E2A /* Group 3 (2).png */,
 				B83404C729F7E273009E74EB /* Ellipse 1.png */,
+				B8B141BD2A9DF61C00CE2E2A /* Line 33 (1).png */,
 				B8451FC0292CCF19009B54E4 /* LaunchScreen.storyboard */,
 				B8451FC3292CCF19009B54E4 /* Info.plist */,
 			);
@@ -266,11 +275,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1BBC2C829AE0F6F00C21083 /* shouta.ttf in Resources */,
+				B8B141C02A9DF63A00CE2E2A /* Group 3 (2).png in Resources */,
 				B8451FC2292CCF19009B54E4 /* LaunchScreen.storyboard in Resources */,
+				B8B141BE2A9DF61D00CE2E2A /* Line 33 (1).png in Resources */,
 				B83404CA29F7E2FE009E74EB /* Ellipse 2.png in Resources */,
 				B8451FBF292CCF19009B54E4 /* Assets.xcassets in Resources */,
 				B83404C829F7E273009E74EB /* Ellipse 1.png in Resources */,
 				B80708652A2F39E30034124E /* Line 33.png in Resources */,
+				B8B141BC2A9DF2D400CE2E2A /* Group 3 (1).png in Resources */,
 				A1BBC2C629AE0E1000C21083 /* 花とちょうちょ.ttf in Resources */,
 				B80708632A2605070034124E /* Group 3.png in Resources */,
 				B8451FBD292CCF15009B54E4 /* Main.storyboard in Resources */,
